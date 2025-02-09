@@ -1,2 +1,2 @@
-# app-loggings-sample
+# app-logging-sample
 Demo project for app logging
