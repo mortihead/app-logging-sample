@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+
+    <Appenders>
+        <!-- Консольный аппендер -->
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %msg%n"/>
+        </Console>
+
+        <!-- JDBC аппендер для записи логов в базу данных -->
+        <JDBC name="DatabaseAppender" tableName="logs">
+            <DriverManager connectionString="${env:DB_URL}"
+                           username="${env:DB_USER_NAME}"
+                           password="${env:DP_PASS}"
+                           driverClassName="org.postgresql.Driver"/>
+            <Column name="created_at" isEventTimestamp="true"/>
+            <Column name="class" pattern="%class" isUnicode="false"/>
+            <Column name="level" pattern="%level" isUnicode="false"/>
+            <Column name="method" pattern="%method" isUnicode="false"/>
+            <Column name="message" pattern="%message" isUnicode="false"/>
+            <Column name="exception" pattern="%ex{full}" isUnicode="false"/>
+        </JDBC>
+    </Appenders>
+
+    <Loggers>
+        <!-- Логгер для записи в консоль -->
+        <Logger name="ru.ibs" level="debug" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+
+        <!-- Логгер для записи в базу данных -->
+        <Logger name="DatabaseLogger" level="debug" additivity="false">
+            <AppenderRef ref="DatabaseAppender"/>
+        </Logger>
+
+    </Loggers>
+
+</Configuration>
